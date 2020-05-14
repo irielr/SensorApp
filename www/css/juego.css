@@ -8,22 +8,16 @@ body.error {
 	background-color: #8B008B;
 }
 
-div.campo {
-	width: 100%;
-	line-height: 100%;
-}
-
 div.lectura {
-	padding: 10px;
-	border: none;
+	padding: 4px;
 	color: #B0E0E6;
 	background-color: #6A5ACD;
 	font-size: 1em;
 	text-align: center;
-	text-transform: uppercase;
-	width: 40%;
-	margin-left: auto;
-	margin-right: auto;
+	margin-top: 10px;
+	margin-left: 10%;
+	display: inline;
+	line-height: 25px;
 }
 
 .footer {
@@ -40,11 +34,11 @@ div.lectura {
 
 .header {
 	margin-top: 0px;
-	padding: 0px;
-	height: 51px;
+	padding: 5px;
+	height: 50px;
 	background-color: #5F9EA0;
 	color: #ffffff;
 	text-align: center;
-	line-height: 51px;
 	width: 100%;
+	line-height: 15px;
 }

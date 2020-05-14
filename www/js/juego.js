@@ -111,7 +111,7 @@ var app = {
 
 	representa: function(dato, elementoHTML){
 		var redondeo = Math.round(dato * 100) / 100;
-		document.querySelector(elementoHTML).innerHTML = redondeo;
+		document.querySelector(elementoHTML).innerHTML = redondeo.toFixed(3);
 	}
 };
 
