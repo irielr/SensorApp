@@ -7,7 +7,7 @@ var app = {
 		
 		if (cordova.platformId == 'android') {
 			StatusBar.overlaysWebView(true);
-			StatusBar.backgroundColorByHexString('#0000FFCC');
+			StatusBar.backgroundColorByHexString('#2F4F4F00');
 			StatusBar.show();
 		};
 		
