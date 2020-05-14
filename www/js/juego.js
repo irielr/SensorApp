@@ -8,16 +8,16 @@ var app = {
 		if (cordova.platformId == 'android') {
 			StatusBar.overlaysWebView(true);
 			StatusBar.backgroundColorByHexString('#0000FFCC');
-			//StatusBar.show();
+			StatusBar.show();
 		};
 		
 		//velocidadX = 0;
 		//velocidadY = 0;
 		
 		document.addEventListener('deviceready', function() {
-													app.vigilarSensores(); // detecta el movimiento
-													app.iniciarJuego(); 
-												}, false);
+								app.vigilarSensores(); // detecta el movimiento
+								app.iniciarJuego(); 
+							}, false);
 	},
 	
 	iniciarJuego: function() {
@@ -29,7 +29,7 @@ var app = {
 			}	
 		function create() {
 				//game.add.sprite(app.inicioX(), app.inicioY(), 'bola');
-				game.add.sprite(150, 400, 'bola');
+				game.add.sprite(100, 100, 'bola');
 				//var hongo = game.add.sprite(app.inicioX(), app.inicioY(), 'hongo');
 				//game.physics.arcade.enable(bola); //se le asignan propiedades físicas al objeto bola
 			}		
@@ -40,7 +40,7 @@ var app = {
 		}		
 		*/
 		var estados = { preload: preload, create: create }; //, update: actualizar }
-		var game = new Phaser.Game(ancho, alto, Phaser.CANVAS, 'phaser', estados); // types: AUTO, CANVAS, WEBGL
+		var game = new Phaser.Game(200, 200, Phaser.CANVAS, 'phaser', estados); // types: AUTO, CANVAS, WEBGL
 		//var game = new Phaser.Game(360, 500, Phaser.AUTO);
 		//game.state.add('phaser', estados);
 		//game.state.start('phaser');
