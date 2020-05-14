@@ -1,0 +1,50 @@
+body {
+	margin: 0px;	
+	padding: 0px;
+	background-color: #B0E0E6;
+}
+
+body.error {
+	background-color: #8B008B;
+}
+
+div.campo {
+	width: 100%;
+	line-height: 100%;
+}
+
+div.lectura {
+	padding: 10px;
+	border: none;
+	color: #B0E0E6;
+	background-color: #6A5ACD;
+	font-size: 1em;
+	text-align: center;
+	text-transform: uppercase;
+	width: 40%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.footer {
+	min-height: 20px;
+	background-color: #AAA;
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	font-style: italic;
+	font-size: small;
+	text-align: center;
+	color: #ffffff;	
+}
+
+.header {
+	margin-top: 0px;
+	padding: 0px;
+	height: 51px;
+	background-color: #5F9EA0;
+	color: #ffffff;
+	text-align: center;
+	line-height: 51px;
+	width: 100%;
+}
