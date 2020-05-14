@@ -2,8 +2,8 @@ var app = {
 	
 	inicio: function() {
 		DIAMETRO = 50;
-		alto = 400; //document.getElementById('phaser').clientHeight; //300; //document.documentElement.clientHeight;
-		ancho = document.getElementById('phaser').clientWidth;
+		alto = 800; //document.documentElement.clientHeight-100; //document.getElementById('phaser').clientHeight; //300; //
+		ancho = 600; //document.getElementById('phaser').clientWidth;
 		
 		if (cordova.platformId == 'android') {
 			StatusBar.overlaysWebView(true);
@@ -11,40 +11,39 @@ var app = {
 			StatusBar.show();
 		};
 		
-		//velocidadX = 0;
-		//velocidadY = 0;
-		
-		document.addEventListener('deviceready', function() {
-								app.vigilarSensores(); // detecta el movimiento
-								app.iniciarJuego(); 
-							}, false);
+		velocidadX = 0;
+		velocidadY = 0;
+		app.vigilarSensores(); // detecta el movimiento
+		app.iniciarJuego(); 
+		//document.addEventListener('deviceready', function() {}, false);
 	},
 	
 	iniciarJuego: function() {
-		function preload() {			
-				//game.physics.startSystem(Phaser.Physics.ARCADE); //iniciar uno de los motores (ARCADE) de Física del Phaser
-				//game.stage.backgroundColor = 'yellow';
-				game.load.image('bola', 'img/balling.png');
-				//game.load.image('hongo', 'img/mushroom.png');
-			}	
-		function create() {
-				//game.add.sprite(app.inicioX(), app.inicioY(), 'bola');
-				game.add.sprite(100, 100, 'bola');
-				//var hongo = game.add.sprite(app.inicioX(), app.inicioY(), 'hongo');
-				//game.physics.arcade.enable(bola); //se le asignan propiedades físicas al objeto bola
-			}		
-		/*
-		function actualizar() {
-			bola.body.velocity.x = (velocidadX * -300); // negativo porque las coordenadas X tienen comportamiento inverso
-			bola.body.velocity.y = (velocidadY * 300);
-		}		
-		*/
-		var estados = { preload: preload, create: create }; //, update: actualizar }
-		var game = new Phaser.Game(200, 200, Phaser.CANVAS, 'phaser', estados); // types: AUTO, CANVAS, WEBGL
-		//var game = new Phaser.Game(360, 500, Phaser.AUTO);
+		var estados = { 
+				preload: function() {			
+					//game.physics.startSystem(Phaser.Physics.ARCADE); //iniciar uno de los motores (ARCADE) de Física del Phaser
+					this.stage.backgroundColor = '#B0E0E6';
+					this.load.image('bola', 'img/balling.png');
+					//game.load.image('hongo', 'img/mushroom.png');
+				},
+				create: function() {
+					this.add.sprite(app.inicioX(), app.inicioY(), 'bola');
+					//game.add.sprite(100, 150, 'bola');
+					//var bola = game.add.sprite(app.inicioX(), app.inicioY(), 'bola');
+					//game.physics.arcade.enable(bola); //se le asignan propiedades físicas al objeto bola
+				},
+				update: function() {
+					bola.body.velocity.x = (velocidadX * -100); // negativo porque las coordenadas X tienen comportamiento inverso
+					bola.body.velocity.y = (velocidadY * 100);
+				}
+			};			
+
+		var game = new Phaser.Game(ancho, alto, Phaser.CANVAS, 'phaser', estados, false); // types: AUTO, CANVAS, WEBGL
+		//var estados = { preload: preload, create: create, update: update }; //
+		//var game = new Phaser.Game(ancho, alto, Phaser.AUTO);
 		//game.state.add('phaser', estados);
 		//game.state.start('phaser');
-		/*
+		
 		var texto = 'ANCHO: ' + ancho + '  y  ALTO: ' + alto;
 		navigator.notification.alert(
 						texto,//: ' + error.code,  // message
@@ -52,7 +51,7 @@ var app = {
 						'Dimensiones',  // title
 						'OK' // buttonName
 			);
-		*/
+		/**/
 	},
 	
 	inicioX: function() {
@@ -63,31 +62,31 @@ var app = {
 		return Math.floor(Math.random()*(alto-DIAMETRO));
 	},
 	
+	///////////////////////////////////////////////////////////////
 	vigilarSensores: function() {		
 		function onError() {
-			//document.body.className = 'error';
 			navigator.notification.alert(
 						'Error de sensores',//: ' + error.code,  // message
 						function() {},// callback
 						'Atención',  // title
 						'OK' // buttonName
 			);
-			//console.log('Error');
 		}		
 		navigator.accelerometer.watchAcceleration( this.onSuccess, onError, {frequency: 100} );
 	},
 			
 	onSuccess: function(datosAceleracion) {
-		app.detectarAgitacion(datosAceleracion);
+		app.detectarMovimiento(datosAceleracion);
 		app.representarValores(datosAceleracion);
-		//app.obtenerDireccion(datosAceleracion);
+		app.obtenerDireccion(datosAceleracion);
 	},
 	
-	detectarAgitacion: function(datosAceleracion) {
-		var agitacionX = (datosAceleracion.x > 5) || (datosAceleracion.x < -5);
-		var agitacionY = (datosAceleracion.y > 5) || (datosAceleracion.y < -5);
-		if (agitacionX || agitacionY) {
-		//	setTime( app.comienza(), 1000 );
+	///////////////////////////////////////////////////////////////
+	detectarMovimiento: function(datosAceleracion) {
+		var movimientoX = (datosAceleracion.x > 5) || (datosAceleracion.x < -5);
+		var movimientoY = (datosAceleracion.y > 5) || (datosAceleracion.y < -5);
+		if (movimientoX || movimientoY) {
+			//setTime( app.comienza(), 1000 );
 			document.body.className = 'error';
 		} else { 
 			document.body.className = '';
@@ -98,11 +97,13 @@ var app = {
 		document.location.reload(true);
 	},
 	
+	*/
 	obtenerDireccion: function(datosAceleracion) {
 		velocidadX = datosAceleracion.x;
 		velocidadY = datosAceleracion.y;
 	},
-	*/
+	
+	///////////////////////////////////////////////////////////////
 	representarValores: function(datosAceleracion) {
 		app.representa(datosAceleracion.x, '#valorx');
 		app.representa(datosAceleracion.y, '#valory');
@@ -117,7 +118,9 @@ var app = {
 
 var DIAMETRO;
 var alto;
-var ancho;		
+var ancho;	
+var velocidadX;
+var velocidadY;
 
 if ('addEventListener' in document) {
 	document.addEventListener('DOMContentLoaded', function() {app.inicio();}, false);

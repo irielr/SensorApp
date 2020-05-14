@@ -5,9 +5,11 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 		<link rel="stylesheet" type="text/css" href="css/juego.css" />
 		
+		<script src = "https://cdn.jsdelivr.net/npm/phaser@3.23.0/dist/phaser.min.js" ></script>
 		<!--
 		<script src = "https://github.com/photonstorm/phaser/blob/master/dist/phaser.min.js" ></script>
 		<script src = "https://cdn.jsdelivr.net/npm/phaser@3.23.0/dist/phaser.min.js" ></script>
+		<script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
 		-->						
 		<title>Game</title>
     </head>
@@ -26,15 +28,15 @@
 			<div class="lectura">Y:&nbsp <span id="valory">?</span></div>
 			<div class="lectura">Z:&nbsp <span id="valorz">?</span></div>
 		</div>
-		<div id="phaser"></div>
+		<canvas id="phaser"></canvas>
 		
 		<footer class="footer">Jugando con los sensores de movimiento</footer>
 
 		<script type="text/javascript" src="cordova.js"></script>
-		<script type="text/javascript" src="js/juego.js"></script>
 		<script type="text/javascript" src="js/phaser.min.js"></script>
-		<!--
+		<!--		
 		<script src = "https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js" > </script>
 		-->
+		<script type="text/javascript" src="js/juego.js"></script>
 	</body>
 </html>
