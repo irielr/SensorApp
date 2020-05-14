@@ -5,6 +5,8 @@
     <author email="irielr74@gmail.com" href="http://phonegap.com">Iriel</author>
     <content src="index.html" />
 	
+	<engine name="android" spec="https://github.com/apache/cordova-android.git#6.3.0" />
+
     <preference name="android-minSdkVersion" value="19" />
 	<preference name="android-targetSdkVersion" value="28" />
 	<preference name='phonegap-version' value='cli-9.0.0' />
