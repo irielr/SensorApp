@@ -30,6 +30,8 @@
 	<plugin name="cordova-plugin-device" source="npm" spec="2.0.3" />
 	<plugin name="cordova-plugin-statusbar" source="npm" spec="2.4.3" />    
 	
+    	<plugin name="cordova-plugin-device-motion" source="npm" spec="2.0.1" /> 
+    	<plugin name="cordova-plugin-device-orientation" source="npm" spec="2.0.1" /> 
 	<!--
     <plugin name="cordova-plugin-device-motion" source="npm" spec="2.0.1" /> Deprecate
     <plugin name="cordova-plugin-device-orientation" source="npm" spec="2.0.1" /> Deprecate
