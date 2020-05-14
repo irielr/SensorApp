@@ -8,7 +8,7 @@ var app = {
 		if (cordova.platformId == 'android') {
 			StatusBar.overlaysWebView(true);
 			StatusBar.backgroundColorByHexString('#0000FFCC');
-			StatusBar.show();
+			//StatusBar.show();
 		};
 		
 		//velocidadX = 0;
