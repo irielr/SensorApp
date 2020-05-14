@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.iriel.gameapp" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
     <name>GameApp</name>
-    <description>My ball Game</description>
+    <description>Jugando con los sensores de movimiento</description>
     <author email="irielr74@gmail.com" href="http://phonegap.com">Iriel</author>
     <content src="index.html" />
 	
