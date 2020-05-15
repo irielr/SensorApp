@@ -2,63 +2,93 @@ var app = {
 	
 	inicio: function() {
 		DIAMETRO = 50;
-		alto = 550;//document.documentElement.clientHeight-106; //document.getElementById('phaser').clientHeight; //300; //
-		ancho = 360;//document.getElementById('phaser').clientWidth;
+		alto 	= 550;		//document.documentElement.clientHeight-106;
+		ancho 	= 360;	//document.getElementById('phaser').clientWidth;		
+		velocidadX = 0;
+		velocidadY = 0;
 		
 		if (cordova.platformId == 'android') {
 			StatusBar.overlaysWebView(true);
 			StatusBar.backgroundColorByHexString('#2F4F4F00');
 			StatusBar.show();
+		};		
+		
+		if (window.DeviceMotionEvent) {
+				//alert("devicemotion is Supported!");
+				window.addEventListener("compassneedscalibration", function(event) { 
+							alert('Se necesita calibrar el dispositivo. Por favor, haga un movimiento en forma de ocho.');    
+							event.preventDefault(); 
+					}, true);
+				window.addEventListener('devicemotion', function() {app.vigilarSensores();}, false);
+				app.iniciarJuego();
+		} else {
+				alert("devicemotion is NOT Supported!");
 		};
-		
-		velocidadX = 0;
-		velocidadY = 0;
-		
-		app.vigilarSensores();															
-		app.iniciarJuego();
 	},
 		
 	iniciarJuego: function() {
 		var bola;
-		var estados = { 
-				preload: function() {
-					//game.load.baseURL = 'https://end3r.github.io/Gamedev-Phaser-Content-Kit/demos/';
-					//game.load.crossOrigin = 'anonymous';
-					//game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-					//game.scale.pageAlignHorizontally = true;
-					//game.scale.pageAlignVertically = true;
-					//game.stage.backgroundColor = '#eee';					
-					//game.physics.startSystem(Phaser.Physics.ARCADE); //iniciar uno de los motores (ARCADE) de Física del Phaser
-					//game.stage.backgroundColor = '#B0E0E6';
-					game.load.image('bola', 'img/balling.png');
-					//game.load.spritesheet("ballsheet", "img/balling.png", 16, 16);
-					//game.load.image('hongo', 'img/mushroom.png');
-				},
-				create: function() {
-					//game.physics.startSystem(Phaser.Physics.ARCADE);
-					//game.add.sprite(app.inicioX(), app.inicioY(), 'bola');
-					//bola = game.add.sprite(100, 200, 'bola');
-					game.add.sprite(100, 200, 'bola');
-					//game.physics.enable(bola, Phaser.Physics.ARCADE);
-					//game.physics.arcade.enable(bola); //se le asignan propiedades físicas al objeto bola
-					//bola.body.velocity.set(150, 150);
-					
-				},
-				update: function() {
-					//bola.body.velocity.x = (velocidadX * -100); // negativo porque las coordenadas X tienen comportamiento inverso
-					//bola.body.velocity.y = (velocidadY * 100);
-				}
-			};			
-
-		var game = new Phaser.Game(ancho, alto, Phaser.AUTO, "phaser", estados);//  types: AUTO, CANVAS, WEBGL
-		//var game = new Phaser.Game({width: ancho, height: alto, type: Phaser.AUTO, scene: estados});//, 'phaser', false); // types: AUTO, CANVAS, WEBGL
-		//var estados = { preload: preload, create: create, update: update }; //
-		//var game = new Phaser.Game(ancho, alto, Phaser.AUTO);
-		//game.state.add('phaser', estados);
-		//game.state.start('phaser');
+		var diana;
 		
-		var texto = 'ANCHO: ' + ancho + '  y  ALTO: ' + alto;
-		alert( texto );
+		var config = {
+					type: Phaser.AUTO,
+					width: ancho,
+					height: alto,
+					backgroundColor: '#B0E0E6',
+					parent: 'phaser',
+					physics: {
+						default: 'arcade',
+						arcade: {
+							gravity: { x:150, y:150 },
+							debug: false
+						}
+					},
+					scene: {
+						preload: preload,
+						create: create,
+						update: update
+					}
+				};
+
+		var game = new Phaser.Game(config);
+
+		function preload ()	{
+			this.load.spritesheet('ball', 'assets/ball20x20.png', { frameWidth: 20, frameHeight: 20 });
+			this.load.image('diana', 'assets/target50x50.png');//, { frameWidth: 50, frameHeight: 50 });
+		}
+		
+		function create ()	{
+			// Inluimos un Texto para represntar una puntucación
+			scoreText = this.add.text(20, 20, 'Score: 0', { fontSize: '32px', fill: '#5F9EA0' });
+			//se añade la imagen al juego en una posición incial y con pripiedades físicas
+			diana = this.physics.add.image(app.inicioX(), app.inicioY(), 'diana');
+			diana.setImmovable(true);
+			diana.body.allowGravity = false;
+			diana.setVelocityX(0);
+			diana.setVelocityY(0);
+			bola = this.physics.add.sprite(app.inicioX(), app.inicioY(), 'ball');
+			
+			// Habilita los 4 bordes del panel
+			this.physics.world.setBoundsCollision(true, true, true, true);
+			// Restringir la bola a los límites 
+			bola.setBounce(0.2);
+			bola.setCollideWorldBounds(true);
+			// Modificamos la puntuación con cada colisión de la bola
+			//this.physics.add.collider(bola, diana);
+			this.physics.add.overlap(bola, diana, app.incrementaPuntuacion(), null, this);
+		}
+		
+		function update (){
+			// Aplicar movimientos a 'bola'
+			bola.setVelocityX(velocidadX * -50);
+			bola.setVelocityY(velocidadY * 50);			
+			if (bola.x>340 || bola.x<20) {
+					app.decrementaPuntuacion();
+			};
+			if (bola.y>530 || bola.y<20) {
+					app.decrementaPuntuacion();
+			};			
+		}
 	},
 	
 	inicioX: function() {
@@ -69,12 +99,21 @@ var app = {
 		return Math.floor(Math.random()*(alto-DIAMETRO));
 	},
 	
+	incrementaPuntuacion: function(){
+		puntuacion += 1;
+		scoreText.setText('Score: ' + puntuacion);
+	},
+	
+	decrementaPuntuacion: function(){
+		puntuacion -= 1;
+		scoreText.setText('Score: ' + puntuacion);
+	},
 	///////////////////////////////////////////////////////////////
 	vigilarSensores: function() {		
 		function onError() {
 			alert('Error de sensores');
 		}		
-		navigator.accelerometer.watchAcceleration( this.onSuccess, onError, {frequency: 100} );
+		navigator.accelerometer.watchAcceleration( this.onSuccess, onError, {frequency: 10} );	
 	},
 			
 	onSuccess: function(datosAceleracion) {
@@ -88,19 +127,17 @@ var app = {
 		var movimientoX = (datosAceleracion.x > 5) || (datosAceleracion.x < -5);
 		var movimientoY = (datosAceleracion.y > 5) || (datosAceleracion.y < -5);
 		if (movimientoX || movimientoY) {
-			alert('Agitación');
-			//setTime( app.comienza(), 1000 );
-			//document.body.className = 'error';
+			//setTime( app.reiniciar(), 1000 );
+			document.body.className = 'error';
 		} else { 
 			document.body.className = '';
 		};
 	},
-	/*
-	comienza: function() {
+	
+	reiniciar: function() {
 		document.location.reload(true);
 	},
 	
-	*/
 	obtenerDireccion: function(datosAceleracion) {
 		velocidadX = datosAceleracion.x;
 		velocidadY = datosAceleracion.y;
@@ -124,8 +161,10 @@ var alto;
 var ancho;	
 var velocidadX;
 var velocidadY;
+var scoreText;
+var puntuacion = 0;
 
 if ('addEventListener' in document) {
 	//document.addEventListener('DOMContentLoaded', function() {app.inicio();}, false);
-	document.addEventListener('deviceready', function() { app.inicio(); }, false);
+	document.addEventListener('deviceready', function() { app.inicio(); }, false);	
 }
