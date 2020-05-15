@@ -14,13 +14,13 @@ var app = {
 		};		
 		
 		if (window.DeviceMotionEvent) {
-				//alert("devicemotion is Supported!");
+				alert("devicemotion is Supported!");
 				window.addEventListener("compassneedscalibration", function(event) { 
 							alert('Se necesita calibrar el dispositivo. Por favor, haga un movimiento en forma de ocho.');    
 							event.preventDefault(); 
 					}, true);
-				//window.addEventListener('devicemotion', function() {app.vigilarSensores();}, false);
-				app.vigilarSensores();
+				window.addEventListener('devicemotion', function() {app.vigilarSensores();}, false);
+				//app.vigilarSensores();
 				app.iniciarJuego();
 		} else {
 				alert("devicemotion is NOT Supported!");
@@ -54,7 +54,7 @@ var app = {
 		var game = new Phaser.Game(config);
 
 		function preload ()	{
-			this.load.spritesheet('ball', 'assets/ball20x20.png', { frameWidth: 20, frameHeight: 20 });
+			this.load.image('ball', 'assets/ball50x50.png');//, { frameWidth: 50, frameHeight: 50 });
 			this.load.image('diana', 'assets/target50x50.png');//, { frameWidth: 50, frameHeight: 50 });
 		}
 		
@@ -62,7 +62,7 @@ var app = {
 			// Inluimos un Texto para represntar una puntucación
 			scoreText = this.add.text(20, 20, 'Score: 0', { fontSize: '32px', fill: '#5F9EA0' });
 			//se añade la imagen al juego en una posición incial y con pripiedades físicas
-			diana = this.physics.add.image(app.inicioX(), app.inicioY(), 'diana');
+			diana = this.physics.add.sprite(app.inicioX(), app.inicioY(), 'diana');
 			diana.setImmovable(true);
 			diana.body.allowGravity = false;
 			diana.setVelocityX(0);
@@ -76,7 +76,7 @@ var app = {
 			bola.setCollideWorldBounds(true);
 			// Modificamos la puntuación con cada colisión de la bola
 			//this.physics.add.collider(bola, diana);
-			this.physics.add.overlap(bola, diana, app.incrementaPuntuacion(), null, this);
+			//this.physics.add.overlap(bola, diana, app.incrementaPuntuacion(), null, this);
 		}
 		
 		function update (){
@@ -88,7 +88,10 @@ var app = {
 			};
 			if (bola.y>530 || bola.y<20) {
 					app.decrementaPuntuacion();
-			};			
+			};
+			if ((bola.x>diana.x-50) && (bola.x<diana.x+50) && (bola.y>diana.y-50) && (bola.y<diana.y+50)) {
+					app.incrementaPuntuacion();
+			};
 		}
 	},
 	
