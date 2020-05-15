@@ -83,13 +83,13 @@ var app = {
 			// Aplicar movimientos a 'bola'
 			bola.setVelocityX(velocidadX * -50);
 			bola.setVelocityY(velocidadY * 50);			
-			if (bola.x>340 || bola.x<20) {
+			if (bola.x>310 || bola.x<50) {
 					app.decrementaPuntuacion();
 			};
-			if (bola.y>530 || bola.y<20) {
+			if (bola.y>500 || bola.y<50) {
 					app.decrementaPuntuacion();
 			};
-			if ((bola.x>diana.x-50) && (bola.x<diana.x+50) && (bola.y>diana.y-50) && (bola.y<diana.y+50)) {
+			if ((bola.x>diana.x-47) && (bola.x<diana.x+47) && (bola.y>diana.y-47) && (bola.y<diana.y+47)) {
 					app.incrementaPuntuacion();
 			};
 		}
