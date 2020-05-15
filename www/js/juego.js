@@ -9,7 +9,7 @@ var app = {
 		
 		if (cordova.platformId == 'android') {
 			StatusBar.overlaysWebView(true);
-			StatusBar.backgroundColorByHexString('#2F4F4F00');
+			StatusBar.backgroundColorByHexString('#004F4F00');
 			StatusBar.show();
 		};		
 		
@@ -19,7 +19,8 @@ var app = {
 							alert('Se necesita calibrar el dispositivo. Por favor, haga un movimiento en forma de ocho.');    
 							event.preventDefault(); 
 					}, true);
-				window.addEventListener('devicemotion', function() {app.vigilarSensores();}, false);
+				//window.addEventListener('devicemotion', function() {app.vigilarSensores();}, false);
+				app.vigilarSensores();
 				app.iniciarJuego();
 		} else {
 				alert("devicemotion is NOT Supported!");
