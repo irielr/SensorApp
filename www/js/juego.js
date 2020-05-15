@@ -96,11 +96,11 @@ var app = {
 	},
 	
 	inicioX: function() {
-		return Math.floor(Math.random()*(ancho-DIAMETRO));
+		return (DIAMETRO + Math.floor(Math.random()*(ancho-DIAMETRO)));
 	},
 	
 	inicioY: function() {
-		return Math.floor(Math.random()*(alto-DIAMETRO));
+		return (DIAMETRO + Math.floor(Math.random()*(alto-DIAMETRO)));
 	},
 	
 	incrementaPuntuacion: function(){
@@ -112,6 +112,7 @@ var app = {
 		puntuacion -= 1;
 		scoreText.setText('Score: ' + puntuacion);
 	},
+	
 	///////////////////////////////////////////////////////////////
 	vigilarSensores: function() {		
 		function onError() {
