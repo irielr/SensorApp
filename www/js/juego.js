@@ -35,7 +35,7 @@ var app = {
 					type: Phaser.AUTO,
 					width: ancho,
 					height: alto,
-					backgroundColor: '#B0E0E6',
+					backgroundColor: '#AFEEEE',
 					parent: 'phaser',
 					physics: {
 						default: 'arcade',
