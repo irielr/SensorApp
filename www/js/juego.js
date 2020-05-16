@@ -2,11 +2,9 @@ var app = {
 	
 	inicio: function() {
 		DIAMETRO = 50;
-		alto 	= 550;		//document.documentElement.clientHeight-106;
+		alto 	= 550;	//document.documentElement.clientHeight-106;
 		ancho 	= 360;	//document.getElementById('phaser').clientWidth;		
-		velocidadX = 0;
-		velocidadY = 0;
-		
+				
 		if (cordova.platformId == 'android') {
 			StatusBar.overlaysWebView(true);
 			StatusBar.backgroundColorByHexString('#004F4F00');
@@ -14,28 +12,32 @@ var app = {
 		};		
 		
 		if (window.DeviceMotionEvent) {
-				alert("devicemotion is Supported!");
+				//alert("devicemotion is Supported!");
 				window.addEventListener("compassneedscalibration", function(event) { 
 							alert('Se necesita calibrar el dispositivo. Por favor, haga un movimiento en forma de ocho.');    
 							event.preventDefault(); 
 					}, true);
 				window.addEventListener('devicemotion', function() {app.vigilarSensores();}, false);
-				//app.vigilarSensores();
 				app.iniciarJuego();
 		} else {
 				alert("devicemotion is NOT Supported!");
 		};
 	},
-		
+	
+	iniciarFastClick: function(){
+		FastClick.attach(document.body);
+	},
+	
 	iniciarJuego: function() {
-		var bola;
-		var diana;
+		velocidadX = 0;
+		velocidadY = 0;
+		puntuacion = 0;
 		
 		var config = {
 					type: Phaser.AUTO,
 					width: ancho,
 					height: alto,
-					backgroundColor: '#AFEEEE',
+					backgroundColor: '#E0FFFF',
 					parent: 'phaser',
 					physics: {
 						default: 'arcade',
@@ -54,8 +56,8 @@ var app = {
 		var game = new Phaser.Game(config);
 
 		function preload ()	{
-			this.load.image('ball', 'assets/ball50x50.png');//, { frameWidth: 50, frameHeight: 50 });
-			this.load.image('diana', 'assets/target50x50.png');//, { frameWidth: 50, frameHeight: 50 });
+			this.load.image('ball', 'assets/ball50x50.png');
+			this.load.image('diana', 'assets/target50x50.png');
 		}
 		
 		function create ()	{
@@ -74,15 +76,13 @@ var app = {
 			// Restringir la bola a los límites 
 			bola.setBounce(0.2);
 			bola.setCollideWorldBounds(true);
-			// Modificamos la puntuación con cada colisión de la bola
-			//this.physics.add.collider(bola, diana);
-			//this.physics.add.overlap(bola, diana, app.incrementaPuntuacion(), null, this);
 		}
 		
 		function update (){
 			// Aplicar movimientos a 'bola'
-			bola.setVelocityX(velocidadX * -50);
-			bola.setVelocityY(velocidadY * 50);			
+			bola.setVelocityX(velocidadX * -150);
+			bola.setVelocityY(velocidadY * 150);		
+			// Modificamos la puntuación con cada colisión de la bola	
 			if (bola.x>310 || bola.x<50) {
 					app.decrementaPuntuacion();
 			};
@@ -93,6 +93,9 @@ var app = {
 					app.incrementaPuntuacion();
 			};
 		}
+		var pantalla = document.querySelector('#phaser');
+		pantalla.addEventListener('click', this.reiniciar, false);
+		
 	},
 	
 	inicioX: function() {
@@ -128,19 +131,30 @@ var app = {
 	},
 	
 	///////////////////////////////////////////////////////////////
+	
 	detectarMovimiento: function(datosAceleracion) {
 		var movimientoX = (datosAceleracion.x > 5) || (datosAceleracion.x < -5);
 		var movimientoY = (datosAceleracion.y > 5) || (datosAceleracion.y < -5);
 		if (movimientoX || movimientoY) {
-			//setTime( app.reiniciar(), 1000 );
 			document.body.className = 'error';
+			//cordova.plugins.diagnostic.restart(null, false);
+			//app.reiniciar();
+			//setTime( app.reiniciar(), 1000 );
 		} else { 
 			document.body.className = '';
 		};
 	},
 	
 	reiniciar: function() {
-		document.location.reload(true);
+		bola.x = app.inicioX();
+		bola.y = app.inicioY();
+		diana.x = app.inicioX();
+		diana.y = app.inicioY();
+		bola.setVelocityX(0);
+		bola.setVelocityY(0);
+        puntuacion = 0;
+        //this.game.state.start("GameOver");
+		//document.location.reload(true);
 	},
 	
 	obtenerDireccion: function(datosAceleracion) {
@@ -167,9 +181,11 @@ var ancho;
 var velocidadX;
 var velocidadY;
 var scoreText;
-var puntuacion = 0;
+var puntuacion;
+var bola;
+var diana;
 
 if ('addEventListener' in document) {
-	//document.addEventListener('DOMContentLoaded', function() {app.inicio();}, false);
+	document.addEventListener('DOMContentLoaded', function() {app.iniciarFastClick();}, false);
 	document.addEventListener('deviceready', function() { app.inicio(); }, false);	
 }

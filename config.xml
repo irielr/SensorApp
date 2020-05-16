@@ -31,7 +31,7 @@
 	<plugin name="cordova-plugin-device" source="npm" spec="2.0.3" />
 	<plugin name="cordova-plugin-statusbar" source="npm" spec="2.4.3" />  
 	<plugin name="cordova-plugin-inappbrowser" source="npm" spec="3.2.0" /> 
-    <plugin name="cordova-plugin-device-motion" source="npm" spec="2.0.1" /> 
+    <plugin name="cordova-plugin-device-motion" source="npm" spec="2.0.1" />
     
 	<!--
 	<plugin name="cordova-plugin-device-motion" source="npm" spec="2.0.1" /> 
